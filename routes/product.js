@@ -3,6 +3,7 @@ const api = express.Router();
 
 api.get("/getProducts");
 api.post("/postProduct");
-api.get("/getProductDetails");
+api.get("/getProductDetails/:id");
+api.get("/deleteproduct/:id")
 
 module.exports = api
