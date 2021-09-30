@@ -5,3 +5,5 @@ const featureProductSchema = Schema({
     name:String,
     price:String
 })
+
+module.exports = mongoose.model("Product",featureProductSchema)

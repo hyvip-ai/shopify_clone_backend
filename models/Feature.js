@@ -5,3 +5,5 @@ const featureSchema = Schema({
     head:String,
     data:String
 })
+
+module.exports = mongoose.model("Feature",featureSchema)

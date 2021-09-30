@@ -5,3 +5,5 @@ const testimoanilsSchema = Schema({
     name:String,
     designation:String
 })
+
+module.exports = mongoose.model("Testimonails",testimoanilsSchema)
