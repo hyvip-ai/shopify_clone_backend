@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
-const featureSchema = Schema({
-    image:String,
+const bannerSchema = Schema({
     head:String,
-    data:String
+    data:String,
+    image:String
 })
