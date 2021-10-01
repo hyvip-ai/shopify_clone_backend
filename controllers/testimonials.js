@@ -22,7 +22,15 @@ function addtetsimonials(req,res){
 
 
 function deletetestimonials(req,res){
-
+    const testi_id = req.params.id;
+    Testimonails.findOneAndDelete({_id:testi_id}).exec((err,data)=>{
+        if(err){
+            return res.status(500).send({messege:"Error Occured"});
+        }
+        else{
+            return res.status(200).send({messege:"Deleted",data:data})
+        }
+    })
 }
 
 function gettestimonials(req,res){
@@ -34,4 +42,10 @@ function gettestimonials(req,res){
             return res.status(200).send({messege:data});
         }
     })
+}
+
+module.exports = {
+    gettestimonials,
+    deletetestimonials,
+    addtetsimonials
 }

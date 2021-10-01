@@ -2,8 +2,8 @@ require("dotenv").config()
 const cors = require('cors')
 const express = require('express')
 const app = express();
-const port = process.env.PORT;
-const mongo = process.env.URI
+const port = process.env.PORT || "mongodb://localhost:27017/testingmongo";
+const mongo = process.env.URI || 3000
 const bodyParser = require('body-parser')
 const defaultRouter = require("./routes/deafult")
 app.use(bodyParser.json())
