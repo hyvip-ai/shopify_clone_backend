@@ -6,6 +6,8 @@ const port = process.env.PORT || "mongodb://localhost:27017/testingmongo";
 const mongo = process.env.URI || 3000
 const bodyParser = require('body-parser')
 const defaultRouter = require("./routes/deafult")
+const storeRouter = require("./routes/store")
+const bannerRoutes = require("./routes/banner")
 app.use(bodyParser.json())
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:false}))
@@ -20,4 +22,6 @@ mongoose.connect(mongo , { useNewUrlParser : true, useUnifiedTopology : true})
 })
 .catch(err=>console.log(`> Error while connecting to mongoDB : ${err.message}`.underline.red ))
 
-app.use("/",defaultRouter)
+app.use("/",defaultRouter);
+app.use("/api",storeRouter);
+app.use("/api",bannerRoutes);

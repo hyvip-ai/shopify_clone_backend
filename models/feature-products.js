@@ -4,7 +4,9 @@ const featureProductSchema = Schema({
     image:String,
     name:String,
     price:String,
-    details:String
+    details:String,
+    store:{ref:Store,type:Schema.ObjectId}
+
 })
 
 module.exports = mongoose.model("Product",featureProductSchema)
