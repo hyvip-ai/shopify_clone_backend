@@ -32,18 +32,18 @@ function addBanner(req,res){
 
 function changeBanner(req,res){
     var store= req.params.store;
-    var position = req.params.position
+    var position = req.body.position
     Banner.findOneAndUpdate({$and:[
         {store:store},
         {position:position}
-    ]},{$set:{image:req.body.image,head:req.body.head,data:req.head.data}}).exec((err,data)=>{
+    ]},{$set:{image:req.body.image,head:req.body.head,data:req.body.data}}).exec((err,data)=>{
         if(err){
         return res.status(500).send({messege:"Error Occured"});
 
         }
 
         else{
-            return res.status().send({messege:"Data Updated",data:data})
+            return res.status(202).send({messege:"Banner Updated",data:data})
         }
     })
 }
@@ -62,6 +62,7 @@ function getBanner(req,res){
             return res.status(200).send({messege:"Banner Data detected",data:data});
         }
         else{
+        console.log(data);
             return res.status(200).send({messege:"no banner Present",data:data})
         }
     })
@@ -72,9 +73,12 @@ function getAllBanner(req,res){
             return res.status(500).send({messege:"Error Occured"});
 
         }
-        else{
+        else if(data.length>0){
             return res.status(200).send({messege:"Banner Avaialble",data:data});
 
+        }
+        else{
+            return res.status(204).send({messege:"No Banner Present"});
         }
     })
 }
