@@ -31,7 +31,21 @@ function addBanner(req,res){
 }
 
 function changeBanner(req,res){
+    var store= req.params.store;
+    var position = req.params.position
+    Banner.findOneAndUpdate({$and:[
+        {store:store},
+        {position:position}
+    ]},{$set:{image:req.body.image,head:req.body.head,data:req.head.data}}).exec((err,data)=>{
+        if(err){
+        return res.status(500).send({messege:"Error Occured"});
 
+        }
+
+        else{
+            return res.status().send({messege:"Data Updated",data:data})
+        }
+    })
 }
 
 function getBanner(req,res){
@@ -44,8 +58,11 @@ function getBanner(req,res){
         if(err){
             return res.status(500).send({messege:"Error Occured"});
         }
-        else{
+        else if(data.length>0){
             return res.status(200).send({messege:"Banner Data detected",data:data});
+        }
+        else{
+            return res.status(200).send({messege:"no banner Present",data:data})
         }
     })
 }
@@ -65,5 +82,6 @@ function getAllBanner(req,res){
 module.exports = {
     addBanner,
     getBanner,
-    getAllBanner
+    getAllBanner,
+    changeBanner
 }
