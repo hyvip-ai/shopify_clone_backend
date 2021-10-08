@@ -1,6 +1,6 @@
 const express = require('express')
 const api = express.Router();
-api.get("/getAll");
-api.post("/postCollectionItem");
-api.post("/deleteACollection/:id");
+const collectionController = require("../controllers/FeatureCards")
+api.get("/getAllCollection/:store",collectionController.getCards);
+api.post("/postCollectionItem/:store",collectionController.addCards);
 module.exports = api;
