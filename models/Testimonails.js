@@ -4,7 +4,8 @@ const testimoanilsSchema = Schema({
     data:String,
     name:String,
     designation:String,
-    store:{ref:Store,type:Schema.ObjectId}
+    image:String,
+    store:{ref:"Store",type:Schema.ObjectId}
 
 })
 

@@ -5,7 +5,8 @@ const featureProductSchema = Schema({
     name:String,
     price:String,
     details:String,
-    store:{ref:Store,type:Schema.ObjectId}
+    availability:String,
+    store:{ref:"Store",type:Schema.ObjectId}
 
 })
 

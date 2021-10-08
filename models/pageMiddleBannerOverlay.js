@@ -4,7 +4,7 @@ const bannerMiddleSchema = Schema({
     head:String,
     data:String,
     image:String,
-    store:{ref:Store,type:Schema.ObjectId}
+    store:{ref:"Store",type:Schema.ObjectId}
 
 })
 

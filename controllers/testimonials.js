@@ -1,17 +1,34 @@
 const Testimonails = require("../models/Testimonails");
+const Store = require("../models/store")
 function addtetsimonials(req,res){
     const params = req.body;
+    
     if(params.data && params.name && params.designation){
-        var testimonial =new Testimonails();
-        testimonial.data = params.data;
-        testimonial.name = params.name;
-        testimonial.designation = params.designation;
-        testimonial.save((err,dataSaved)=>{
+        const store = req.params.store
+        Store.find({_id:store}).exec((err,mystore)=>{
             if(err){
-                return res.status(500).send({messege:"Error Occured"})
+                return res.status(500).send({messege:"Error Occuerd"});
+
+            }
+            else if(mystore.length>0){
+                var testimonial =new Testimonails();
+                testimonial.data = params.data;
+                testimonial.name = params.name;
+                testimonial.designation = params.designation;
+                testimonial.image = params.image
+                testimonial.store = store
+                testimonial.save((err,dataSaved)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"})
+                    }
+                    else{
+                        return res.status(201).send({messege:"Testimonial Saved",data:dataSaved});
+                    }
+                })
             }
             else{
-                return res.status(201).send({messege:dataSaved});
+                return res.status(404).send({messege:"Store Doesn't Exists"});
+
             }
         })
     }
@@ -21,31 +38,32 @@ function addtetsimonials(req,res){
 }
 
 
-function deletetestimonials(req,res){
-    const testi_id = req.params.id;
-    Testimonails.findOneAndDelete({_id:testi_id}).exec((err,data)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-        }
-        else{
-            return res.status(200).send({messege:"Deleted",data:data})
-        }
-    })
-}
-
 function gettestimonials(req,res){
-    Testimonails.find({}).exec((err,data)=>{
+    const store= req.params.store
+    Store.find({_id:store}).exec((err,mystore)=>{
         if(err){
             return res.status(500).send({messege:"Error Occured"});
         }
+        else if(mystore.length>0){
+            Testimonails.find({store:store}).exec((err,data)=>{
+                if(err){
+                    return res.status(500).send({messege:"Error Occured"});
+                }
+                else if(data.length>0){
+                    return res.status(200).send({messege:"Testimonials Found",data:data});
+                }
+                else{
+                    return res.status(404).send({messege:"Testimonials Not Found",data:data})
+                }
+            })
+        }
         else{
-            return res.status(200).send({messege:data});
+            return res.status(404).send({messege:"Store Not Found"})
         }
     })
 }
 
 module.exports = {
     gettestimonials,
-    deletetestimonials,
     addtetsimonials
 }

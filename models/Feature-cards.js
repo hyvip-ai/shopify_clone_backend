@@ -4,7 +4,7 @@ const featureCardsSchema = Schema({
     image:String,
     title:String,
     data:String,
-    store:{ref:Store,type:Schema.ObjectId}
+    store:{ref:"Store",type:Schema.ObjectId}
 
 })
 
