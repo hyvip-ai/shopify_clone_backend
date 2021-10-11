@@ -3,35 +3,38 @@ const Store = require("../models/store")
 function addCards(req,res){
     const params = req.body;
     const store = req.params.store;
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-        }
-        else if(mystore.length>0){
-            if(params.title && params.image &&params.data){
-                var featureCard = new FeatureCrads();
-                featureCard.image = params.image;
-                featureCard.title = params.title;
-                featureCard.store = store
-                featureCard.data = params.data
-                featureCard.save((err,data)=>{
-                    if(err){
-                        return res.status(500).send({messege:"Error While Saving Data"});
-                    }
-                    else{
-                        return res.status(201).send({messege:"Colleaction Added",data:data});
-        
-                    }
-                })
+    if(params.title && params.image &&params.data){
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(mystore.length>0){
+                
+                    var featureCard = new FeatureCrads();
+                    featureCard.image = params.image;
+                    featureCard.title = params.title;
+                    featureCard.store = store
+                    featureCard.data = params.data
+                    featureCard.save((err,data)=>{
+                        if(err){
+                            return res.status(500).send({messege:"Error While Saving Data"});
+                        }
+                        else{
+                            return res.status(201).send({messege:"Colleaction Added",data:data});
+            
+                        }
+                    })
+             
             }
             else{
-                return res.status(400).send({messege:"Invalid Data"});
+                return res.status(404).send({messege:"Store Not Found"});
             }
-        }
-        else{
-            return res.status(404).send({messege:"Store Not Found"});
-        }
-    })
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+
 }
 
 function getCards(req,res){
