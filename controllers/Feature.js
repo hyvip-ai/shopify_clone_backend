@@ -30,35 +30,38 @@ function getAllFeature(req,res){
 function postFeature(req,res){
     const params = req.body
     const store = req.params.store;
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-        }
-        else if(mystore.length>0){
-            if(params.image && params.head && params.data){
-                var feature = new Feature();
-                feature.image = params.image;
-                feature.head = params.head;
-                feature.data = params.data;
-                feature.store = store;
-                feature.save((err,savedData)=>{
-                    if(err){
-                        return res.status(500).send({messege:"Error Occured"});
-        
-                    }
-                    else{
-                        return res.status(201).send({messege:"Famous Product Added",data:savedData})
-                    }
-                })
+    if(params.image && params.head && params.data){
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(mystore.length>0){
+              
+                    var feature = new Feature();
+                    feature.image = params.image;
+                    feature.head = params.head;
+                    feature.data = params.data;
+                    feature.store = store;
+                    feature.save((err,savedData)=>{
+                        if(err){
+                            return res.status(500).send({messege:"Error Occured"});
+            
+                        }
+                        else{
+                            return res.status(201).send({messege:"Famous Product Added",data:savedData})
+                        }
+                    })
+               
             }
             else{
-                return res.status(400).send({messege:"Invalid Data"});
+                return res.status(404).send({messege:"Store Doesn't Exist"});
             }
-        }
-        else{
-            return res.status(404).send({messege:"Store Doesn't Exist"});
-        }
-    })
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+
 }
 
 module.exports = {
