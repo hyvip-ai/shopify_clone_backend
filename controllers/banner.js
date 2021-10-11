@@ -5,7 +5,7 @@ function addBanner(req,res){
 
 if(params.head && params.data && params.image && params.position){
     const store = req.params.store;
-    Store.findOne({_id:store}).exec((err,mystore)=>{
+    Store.find({_id:store}).exec((err,mystore)=>{
         if(err){
             return res.status(500).send({messege:"Error Occuerd"});
         }
@@ -22,7 +22,7 @@ if(params.head && params.data && params.image && params.position){
 
                 }
                 else{
-                    return res.status(201).send({messege:"Banner Craeted",data:data})
+                    return res.status(201).send({messege:"Banner Created",data:data})
                 }
             })
            
