@@ -10,7 +10,6 @@ if(params.head && params.data && params.image && params.position){
             return res.status(500).send({messege:"Error Occuerd"});
         }
         else if(mystore.length>0){
-           if(params.head && params.data && params.image && params.position){
             var banner = new Banner();
             banner.head = params.head;
             banner.data = params.data;
@@ -26,10 +25,7 @@ if(params.head && params.data && params.image && params.position){
                     return res.status(201).send({messege:"Banner Craeted",data:data})
                 }
             })
-           }
-           else{
-               return res.status(500).send({messege:"Invalid data"});
-           } 
+           
         }
         else{
             return res.status(400).send({messege:"Store Doesn't Exists"});
@@ -45,34 +41,37 @@ function changeBanner(req,res){
     var store= req.params.store;
     var position = req.body.position
     const params = req.body;
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-        }
-        else if(mystore.length>0){
-            if(params.head && params.data && params.image && params.position){
-                Banner.findOneAndUpdate({$and:[
-                    {store:store},
-                    {position:position}
-                ]},{$set:{image:req.body.image,head:req.body.head,data:req.body.data}}).exec((err,data)=>{
-                    if(err){
-                    return res.status(500).send({messege:"Error Occured"});
-            
-                    }
-            
-                    else{
-                        return res.status(202).send({messege:"Banner Updated",data:data})
-                    }
-                })
+    if(params.head && params.data && params.image && params.position){
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(mystore.length>0){
+               
+                    Banner.findOneAndUpdate({$and:[
+                        {store:store},
+                        {position:position}
+                    ]},{$set:{image:req.body.image,head:req.body.head,data:req.body.data}}).exec((err,data)=>{
+                        if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                
+                        }
+                
+                        else{
+                            return res.status(202).send({messege:"Banner Updated",data:data})
+                        }
+                    })
+                
             }
             else{
-                return res.status(500).send({messege:"Invalid Data"})
+                return res.status(404).send({messege:"Store Not Found"});
             }
-        }
-        else{
-            return res.status(404).send({messege:"Store Not Found"});
-        }
-    })
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invaid Data"});
+    }
+
 }
 
 function getBanner(req,res){
