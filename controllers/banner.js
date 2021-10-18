@@ -28,7 +28,7 @@ if(params.head && params.data && params.image && params.position){
            
         }
         else{
-            return res.status(400).send({messege:"Store Doesn't Exists"});
+            return res.status(404).send({messege:"Store Doesn't Exists"});
         }
     })
 }
@@ -181,11 +181,11 @@ function editBannerPosition(req,res){
 
 function deleteBanner(req,res){
     if(req.params.id && req.params.store){
-        Store.find({_id:req.params.store}).exec((err,data)=>{
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
             if(err){
                 return res.status(500).send({messege:"Error Occured"});
             }
-            else if(data.length>0){
+            else if(mystore.length>0){
                 Banner.findOneAndDelete({$and:[
                     {store:req.params.store},
                     {_id:req.params.id}
