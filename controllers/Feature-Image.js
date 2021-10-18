@@ -68,11 +68,11 @@ function getImages(req,res){
 
 function deleteImage(req,res){
     if(req.params.store && req.params.id){
-        Store.find({_id:req.params.store}).exec((err,data)=>{
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
             if(err){
                 return res.status(500).send({messege:"Error Occured"});
             }
-            else if(data.length>0){
+            else if(mystore.length>0){
                 FeatureImage.findOneAndDelete({_id:req.params.id}).exec((err,data)=>{
                     if(err){
                         return res.status(500).send({messege:"Error Occured"})
