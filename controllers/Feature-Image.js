@@ -35,30 +35,35 @@ function addImage(req,res){
 }
 
 function getImages(req,res){
-    const store = req.params.store;
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Ocuured"})
-        }
-        else if(mystore.length>0){
-            FeatureImage.find({store:store}).exec((err,data)=>{
-                if(err){
-                    return res.status(500).send({messege:"Error Occured"});
-                }
-                else if(data.length>0){
-                    return res.status(200).send({messege:"Images Found",data:data});
-                }
-                else{
-                    return res.status(404).send({messege:"Images Not Found",data:data});
-        
-                }
+    if(req.params.store){
+        const store = req.params.store;
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Ocuured"})
+            }
+            else if(mystore.length>0){
+                FeatureImage.find({store:store}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(data.length>0){
+                        return res.status(200).send({messege:"Images Found",data:data});
+                    }
+                    else{
+                        return res.status(404).send({messege:"Images Not Found",data:data});
             
-            })
-        }
-        else{
-            return res.status(404).send({messege:"Store Not Found"})
-        }
-    })
+                    }
+                
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"})
+            }
+        })
+    }
+    else{
+        return res.status(401).send({messege:"You Don't Have a Store Yet"});
+    }
 }
 
 module.exports = {

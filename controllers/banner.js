@@ -75,59 +75,70 @@ function changeBanner(req,res){
 }
 
 function getBanner(req,res){
-    var store= req.params.store;
-    var position = req.params.position
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-        }
-        else if(mystore.length>0){
-            Banner.find({$and:[
-                {store:store},
-                {position:position}
-            ]}).exec((err,data)=>{
-                if(err){
-                    return res.status(500).send({messege:"Error Occured"});
-                }
-                else if(data.length>0){
-                    return res.status(200).send({messege:"Banner Data detected",data:data});
-                }
-                else{
-                console.log(data);
-                    return res.status(404).send({messege:"no banner Present",data:data})
-                }
-            })
-        }
-        else{
-            return res.status(404).send({messege:"Store Not Found"});
-        }
-    })
+    if(req.params.store && req.params.position){
+        var store= req.params.store;
+        var position = req.params.position
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(mystore.length>0){
+                Banner.find({$and:[
+                    {store:store},
+                    {position:position}
+                ]}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(data.length>0){
+                        return res.status(200).send({messege:"Banner Data detected",data:data});
+                    }
+                    else{
+                    console.log(data);
+                        return res.status(404).send({messege:"no banner Present",data:data})
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"});
+            }
+        })
+    }
+    else{
+        return res.status(401).send({messege:"You Are not Authenticated enough"});
+
+    }
 }
 function getAllBanner(req,res){
-    Store.find({_id:req.params.store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"});
-
-        }
-        else if(mystore.length>0){
-            Banner.find({store:req.params.store}).exec((err,data)=>{
-                if(err){
-                    return res.status(500).send({messege:"Error Occured"});
-        
-                }
-                else if(data.length>0){
-                    return res.status(200).send({messege:"Banner Avaialble",data:data});
-        
-                }
-                else{
-                    return res.status(404).send({messege:"No Banner Present"});
-                }
-            })
-        }
-        else{
-            return res.status(404).send({messege:"Store Doesn't Exist"});
-        }
-    })
+    if(req.params.store){
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+    
+            }
+            else if(mystore.length>0){
+                Banner.find({store:req.params.store}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+            
+                    }
+                    else if(data.length>0){
+                        return res.status(200).send({messege:"Banner Avaialble",data:data});
+            
+                    }
+                    else{
+                        return res.status(404).send({messege:"No Banner Present"});
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Doesn't Exist"});
+            }
+        })
+    }
+    else{
+        return res.status(401).send({messege:"You Don't Haver a store Id"});
+    }
 }
 
 module.exports = {
