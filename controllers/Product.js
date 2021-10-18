@@ -1,6 +1,7 @@
 const Product = require("../models/feature-products");
 const Store = require("../models/store")
 function addproduct(req,res){
+if(req.params.store){
     const params = req.body;
     const store = req.params.store;
     Store.find({_id:store}).exec((err,mystore)=>{
@@ -34,6 +35,10 @@ function addproduct(req,res){
             return res.status(404).send({messege:"Store Not Found"});
         }
     })
+}
+else{
+    return res.status(401).send({messege:"User Not Authorized"});
+}
 
 
 }

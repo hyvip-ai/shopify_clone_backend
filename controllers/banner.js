@@ -141,9 +141,81 @@ function getAllBanner(req,res){
     }
 }
 
+function editBannerPosition(req,res){
+    console.log(req.params.store , req.params.position)
+    if(req.params.store && req.params.position){
+    if(req.body.image && req.body.head && req.body.data){
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"})
+            }
+            else if(mystore.length>0){
+                Banner.findOneAndUpdate({$and:[
+                    {position:req.params.position},
+                    {store:req.params.store}
+                ]},{$set:{image:req.body.image,data:req.body.data,head:req.body.head}}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(data){
+                        return res.status(200).send({messege:"Data Updated",data:data})
+                    }
+                    else{
+                        return res.status(400).send({messege:"Error Occured"})
+                    }
+                })
+            }
+            else{
+                return res.status(400).send({messege:"Store Not Found"});
+            }
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+    }
+    else{
+        return res.status(401).send({messege:"You Are not Authorized"});
+    }
+}
+
+function deleteBanner(req,res){
+    if(req.params.id && req.params.store){
+        Store.find({_id:req.params.store}).exec((err,data)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(data.length>0){
+                Banner.findOneAndDelete({$and:[
+                    {store:req.params.store},
+                    {_id:req.params.id}
+                ]}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"error Occured"});
+                    }
+                    else if(data){
+                        return res.status(200).send({messege:"Banner Deleted"});
+                    }
+                    else{
+                        return res.status(400).send({messege:"Error Occured"})
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"})
+            }
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+}
+
 module.exports = {
     addBanner,
     getBanner,
     getAllBanner,
-    changeBanner
+    changeBanner,
+    editBannerPosition,
+    deleteBanner
 }

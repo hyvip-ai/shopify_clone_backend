@@ -66,7 +66,37 @@ function getImages(req,res){
     }
 }
 
+function deleteImage(req,res){
+    if(req.params.store && req.params.id){
+        Store.find({_id:req.params.store}).exec((err,data)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(data.length>0){
+                FeatureImage.findOneAndDelete({_id:req.params.id}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"})
+                    }
+                    else if(data){
+                        return res.status(200).send({messege:"Deleted SuccessFully"});
+                    }
+                    else{
+                        return res.status(500).send("Error Occured");
+                    }
+                })
+            }
+            else{
+                return res.status(400).send({messege:"Store Not Found"});
+            }
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+}
+
 module.exports = {
     getImages,
-    addImage
+    addImage,
+    deleteImage
 }

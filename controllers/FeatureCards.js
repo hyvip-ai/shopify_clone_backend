@@ -1,6 +1,7 @@
 const FeatureCrads = require("../models/Feature-cards");
 const Store = require("../models/store")
 function addCards(req,res){
+ if(req.params.store){
     const params = req.body;
     const store = req.params.store;
     if(params.title && params.image &&params.data){
@@ -34,34 +35,44 @@ function addCards(req,res){
     else{
         return res.status(400).send({messege:"Invalid Data"});
     }
+ }
+ else{
+     return res.status(401).send({messege:"You are not authorized"})
+ }
 
 }
 
 function getCards(req,res){
-    console.log("dhukche")
-    const store = req.params.store;
-    Store.find({_id:store}).exec((err,mystore)=>{
-        if(err){
-            return res.status(500).send({messege:"Error Occured"})
-        }
-        else if(mystore.length>0){
-            FeatureCrads.find({store:store}).exec((err,cards)=>{
-                console.log(err)
-                if(err){
-                    return res.status(500).send({messege:"Error Occured"});
-                }
-                else if(cards.length>0){
-                    return res.status(200).send({messege:"Collection Found",data:cards})
-                }
-                else{
-                    return res.status(404).send({messege:"Collection Not Found",data:cards})
-                }
-            })
-        }
-        else{
-            return res.status(404).send({messege:"Store Not Found"});
-        }
-    })
+    // console.log("dhukche")
+    if(req.params.store){
+        const store = req.params.store;
+        Store.find({_id:store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"})
+            }
+            else if(mystore.length>0){
+                FeatureCrads.find({store:store}).exec((err,cards)=>{
+                    console.log(err)
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(cards.length>0){
+                        return res.status(200).send({messege:"Collection Found",data:cards})
+                    }
+                    else{
+                        return res.status(404).send({messege:"Collection Not Found",data:cards})
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"});
+            }
+        })
+    }
+    else{
+        return res.status(401).send({messege:"You are not authorized"})
+
+    }
 }
 
 
