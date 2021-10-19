@@ -43,7 +43,6 @@ function addCards(req,res){
 }
 
 function getCards(req,res){
-    // console.log("dhukche")
     if(req.params.store){
         const store = req.params.store;
         Store.find({_id:store}).exec((err,mystore)=>{
@@ -52,7 +51,6 @@ function getCards(req,res){
             }
             else if(mystore.length>0){
                 FeatureCrads.find({store:store}).exec((err,cards)=>{
-                    console.log(err)
                     if(err){
                         return res.status(500).send({messege:"Error Occured"});
                     }

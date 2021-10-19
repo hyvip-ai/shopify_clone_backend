@@ -2,7 +2,6 @@ const FeatureImage = require("../models/feature-images")
 const Store = require("../models/store")
 function addImage(req,res){
     const store = req.params.store
-    console.log(req.body)
     if(req.body.image){
         Store.find({_id:store}).exec((err,mystore)=>{
             if(err){
@@ -94,9 +93,34 @@ function deleteImage(req,res){
         return res.status(400).send({messege:"Invalid Data"});
     }
 }
-
+function editImage(req,res){
+    if(req.params.store && req.params.id){
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }
+            else if(mystore.length>0){
+                FeatureImage.findOneAndUpdate({_id:req.params.id},{$set:{image:req.body.image}}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(data){
+                        return res.status(200).send({messege:"Image Updated",data:data})
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"});
+            }
+        })
+    }
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+}
 module.exports = {
     getImages,
     addImage,
-    deleteImage
+    deleteImage,
+    editImage
 }

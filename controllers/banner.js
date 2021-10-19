@@ -94,7 +94,7 @@ function getBanner(req,res){
                         return res.status(200).send({messege:"Banner Data detected",data:data});
                     }
                     else{
-                    console.log(data);
+                    
                         return res.status(404).send({messege:"no banner Present",data:data})
                     }
                 })
@@ -142,7 +142,6 @@ function getAllBanner(req,res){
 }
 
 function editBannerPosition(req,res){
-    console.log(req.params.store , req.params.position)
     if(req.params.store && req.params.position){
     if(req.body.image && req.body.head && req.body.data){
         Store.find({_id:req.params.store}).exec((err,mystore)=>{
