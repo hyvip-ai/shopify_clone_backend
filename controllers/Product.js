@@ -69,9 +69,38 @@ function getallProducts(req,res){
     })
 
 }
+function deleteProduct(req,res){
+    if(req.params.store && req.params.id){
+        Store.find({_id:req.params.store}).exec((err,mystore)=>{
+            if(err){
+                return res.status(500).send({messege:"Error Occured"});
+            }   
+            else if(mystore.length>0){
+                Product.findOneAndDelete({_id:req.params.id}).exec((err,data)=>{
+                    if(err){
+                        return res.status(500).send({messege:"Error Occured"});
+                    }
+                    else if(data){
+                        return res.status(200).send({messege:"Product Deleted",data:data});
+                    }
+                    else{
+                        return res.status(404).send({messege:"product Not Found"});
+                    }
+                })
+            }
+            else{
+                return res.status(404).send({messege:"Store Not Found"});
 
+            }
+        })
+    }   
+    else{
+        return res.status(400).send({messege:"Invalid Data"});
+    }
+}
 
 module.exports = {
     addproduct,
-    getallProducts
+    getallProducts,
+    deleteProduct
 }
