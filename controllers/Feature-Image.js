@@ -80,7 +80,7 @@ function deleteImage(req,res){
                         return res.status(200).send({messege:"Deleted SuccessFully"});
                     }
                     else{
-                        return res.status(500).send("Error Occured");
+                        return res.status(404).send({messege:"Feature Image Not Found"});
                     }
                 })
             }

@@ -196,7 +196,7 @@ function deleteBanner(req,res){
                         return res.status(200).send({messege:"Banner Deleted"});
                     }
                     else{
-                        return res.status(400).send({messege:"Error Occured"})
+                        return res.status(404).send({messege:"Banner Not Found"})
                     }
                 })
             }
