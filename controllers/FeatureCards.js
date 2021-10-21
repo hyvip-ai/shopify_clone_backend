@@ -103,5 +103,6 @@ function deletefeatureCards(req,res){
 }
 module.exports = {
     addCards,
-    getCards
+    getCards,
+    deletefeatureCards
 }

@@ -92,5 +92,6 @@ function deleteTestimonials(req,res){
 }
 module.exports = {
     gettestimonials,
-    addtetsimonials
+    addtetsimonials,
+    deleteTestimonials
 }
