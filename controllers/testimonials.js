@@ -90,8 +90,48 @@ function deleteTestimonials(req,res){
         return res.status(400).send({messege:"Invalid Data"});
     }
 }
+
+function edittestimonials(req,res){
+    if(req.params.store && req.params.id){
+        if(req.body.data && req.body.name && req.body.designation && req.body.image){
+            Store.find({_id:req.params.id}).exec((err,mystore)=>{
+                if(err){
+                    return res.status(500).send({messege:"Error Occured"})
+                }
+                else if(mystore.length>0){
+                    Testimonails.findOneAndUpdate({_id:id},{$set:{
+                        image:req.body.image,
+                        name:req.body.name,
+                        designation:req.body.designation,
+                        data:req.body.data
+                    }}).exec((err,data)=>{
+                        if(err){
+                            return res.send({messege:"Error Occured"});
+                        }
+                        else if(data){
+                            return res.status(200).send({messege:"data Updated",data:data});
+                        }
+                        else{
+                            return res.status(404).send({messege:"Not Updated product doesn't exist"});
+                        }
+                    })
+                }
+                else{
+                    return res.status(404).send({messege:"Store Not Found"});
+                }
+            })
+        }
+        else{
+            return res.status(400).send({messege:"Invalid Data"});
+        }
+    }
+    else{
+        return res.status(400).send({messege:"Error Occured"});
+    }
+}
 module.exports = {
     gettestimonials,
     addtetsimonials,
-    deleteTestimonials
+    deleteTestimonials,
+    edittestimonials
 }

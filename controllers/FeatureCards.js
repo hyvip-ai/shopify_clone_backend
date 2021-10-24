@@ -101,8 +101,47 @@ function deletefeatureCards(req,res){
         return res.status(400).send({messege:"Invalid Data"});
     }
 }
+
+function editFeatureCard(req,res){
+    if(req.params.store && req.params.id){
+        if(req.body.image && req.body.title && req.body.data){
+            Store.find({_id:req.params.store}).exec((err,mystore)=>{
+                if(err){
+                    return res.status(500).send({messege:"Error Occured"})
+                }
+                else if (mystore.length>0){
+                    FeatureCards.findOneAndUpdate({_id:req.params.id},{$set:{
+                        image:req.body.image,
+                        title:req.body.title,
+                        data:req.body.data
+                    }}).exec((err,data)=>{
+                        if(err){
+                            return res.status(500).send({messege:"Error Occured"});
+                        }
+                        else if(data){
+                            return res.status(200).send({messege:"Data Updated",data:data});
+                        }
+                        else{
+                            return res.status(404).send({messege:"Data Not Updated, Feature Card Not Found"})
+                        }
+                    })
+                }   
+                else{
+                    return res.status(404).send({messege:"Store Not Found"});
+                }
+            })
+        }
+        else{
+            return res.status(400).send({messege:"Error Occured"});
+        }
+    }   
+    else{
+        return res.status(400).send({messege:"Error Occured"});
+    }
+}
 module.exports = {
     addCards,
     getCards,
-    deletefeatureCards
+    deletefeatureCards,
+    editFeatureCard
 }
