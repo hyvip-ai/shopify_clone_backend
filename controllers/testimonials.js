@@ -94,12 +94,12 @@ function deleteTestimonials(req,res){
 function edittestimonials(req,res){
     if(req.params.store && req.params.id){
         if(req.body.data && req.body.name && req.body.designation && req.body.image){
-            Store.find({_id:req.params.id}).exec((err,mystore)=>{
+            Store.find({_id:req.params.store}).exec((err,mystore)=>{
                 if(err){
                     return res.status(500).send({messege:"Error Occured"})
                 }
                 else if(mystore.length>0){
-                    Testimonails.findOneAndUpdate({_id:id},{$set:{
+                    Testimonails.findOneAndUpdate({_id:req.params.id},{$set:{
                         image:req.body.image,
                         name:req.body.name,
                         designation:req.body.designation,
