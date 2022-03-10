@@ -21,16 +21,17 @@ console.log(process.env.URI);
 mongoose
   .connect(process.env.URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((res) => {
-    app.listen(port, () => {
-      console.log("> Connected...".underline.cyan);
-      console.log("> Write Some Code...".underline.cyan);
-    });
+    console.log("> Connected To MongoDb...".underline.cyan);
   })
   .catch((err) =>
     console.log(
       `> Error while connecting to mongoDB : ${err.message}`.underline.red
     )
   );
+app.listen(port, () => {
+  console.log("> Connected TO App...".underline.cyan);
+  console.log("> Write Some Code...".underline.cyan);
+});
 
 app.use("/", defaultRouter);
 app.use("/api", storeRouter);
